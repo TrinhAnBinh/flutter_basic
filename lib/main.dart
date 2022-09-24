@@ -10,5 +10,8 @@ import 'ui/home.dart';
 // }
 
 void main() => runApp(new MaterialApp(
-  home: ScaffordExample(),
+  // For the basic component
+  // home: ScaffordExample(),
+  // For the bizcard
+  home: BizCard(),
 ));
