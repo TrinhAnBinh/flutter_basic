@@ -13,5 +13,5 @@ void main() => runApp(new MaterialApp(
   // For the basic component
   // home: ScaffordExample(),
   // For the bizcard
-  home: BizCard(),
+  home: Wisdom(),
 ));
