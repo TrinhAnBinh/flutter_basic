@@ -3,7 +3,10 @@
 A new Flutter project. 
 For the basic component of flutter:
 The project component lock like:
-![](Component.png)
+---
+The demo Tip Calculator App.
+
+![](tip_calculator.png)
 
 ## Getting Started
 

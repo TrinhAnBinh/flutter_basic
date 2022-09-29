@@ -1,4 +1,222 @@
+import 'package:first_flutter_app/util/hexcolor.dart';
 import 'package:flutter/material.dart';
+
+class BillSplitter extends StatefulWidget {
+  const BillSplitter({Key? key}) : super(key: key);
+
+  @override
+  State<BillSplitter> createState() => _BillSplitterState();
+}
+
+class _BillSplitterState extends State<BillSplitter> {
+  int _tipPercentage = 0;
+  int _personCounter = 0;
+  double _billAmount = 0.0;
+  Color _purple = HexColor('#6908D6');
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+        alignment: Alignment.center,
+        color: Colors.white,
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.all(20),
+          children: <Widget>[
+            Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                color: _purple.withOpacity(0.1), //Colors.purpleAccent.shade100,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Per Person',
+                      style: TextStyle(
+                        color: _purple,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '\$123',
+                        style: TextStyle(color: _purple.withOpacity(0.5), fontSize: 35, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.all(12),
+              // height: 250,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: _purple.withOpacity(0.1), //Colors.greenAccent.shade100,
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.circular(12)),
+
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    style: TextStyle(color: _purple.withOpacity(0.5)),
+                    decoration: InputDecoration(
+                      prefixText: 'Bill Amount ',
+                      prefixIcon: Icon(
+                        Icons.attach_money,
+                        color: _purple,
+                      ),
+                    ),
+                    onChanged: (String value) {
+                      try {
+                        _billAmount = double.parse(value);
+                      } catch (exception) {
+                        _billAmount = 0.0;
+                      }
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Split',
+                        style: TextStyle(color: _purple),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                if (_personCounter > 1) {
+                                  _personCounter--;
+                                } else {
+                                  // do nothing
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                color: _purple.withOpacity(0.1),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '-',
+                                  style: TextStyle(
+                                    color: _purple,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            '$_personCounter',
+                            style: TextStyle(
+                              color: _purple.withOpacity(0.7),
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _personCounter++;
+                              });
+                            },
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7),
+                                color: _purple.withOpacity(0.1),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '+',
+                                  style: TextStyle(
+                                    color: _purple.withOpacity(0.5),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Tip',
+                        style: TextStyle(color: _purple, fontWeight: FontWeight.bold, fontSize: 17),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          '\$22',
+                          style: TextStyle(
+                            color: _purple,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        '$_tipPercentage%',
+                        style: TextStyle(
+                          color: _purple,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Slider(
+                          value: _tipPercentage.toDouble(),
+                          min: 0,
+                          max: 100,
+                          divisions: 10,
+                          inactiveColor: Colors.grey.shade400,
+                          activeColor: _purple.withOpacity(0.7),
+                          onChanged: (double newValue) {
+                            setState(() {
+                              _tipPercentage = newValue.round();
+                            });
+                          })
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class Wisdom extends StatefulWidget {
   const Wisdom({Key? key}) : super(key: key);
