@@ -47,7 +47,7 @@ class _BillSplitterState extends State<BillSplitter> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '\$123',
+                        '\$ ${calculateTotalPerson(_tipPercentage,_billAmount,_personCounter)}',
                         style: TextStyle(color: _purple.withOpacity(0.5), fontSize: 35, fontWeight: FontWeight.bold),
                       ),
                     )
@@ -174,7 +174,7 @@ class _BillSplitterState extends State<BillSplitter> {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          '\$22',
+                          '\$ ${(calculateTotolTip(_billAmount, _tipPercentage)).toStringAsFixed(2)}',
                           style: TextStyle(
                             color: _purple,
                             fontWeight: FontWeight.bold,
@@ -215,6 +215,21 @@ class _BillSplitterState extends State<BillSplitter> {
         ),
       ),
     );
+  }
+
+  calculateTotolTip(double billAmount, int tipPercentage) {
+    double totalTip = 0.0;
+    if (billAmount < 0.0 || billAmount.toString().isEmpty || billAmount == null) {
+      // no go
+    } else {
+      totalTip = tipPercentage / 100 * billAmount;
+    }
+    return totalTip;
+  }
+
+  calculateTotalPerson(int tipPercentage, double billAmount, int splitBy) {
+    double totalPerPerson = (calculateTotolTip(billAmount, tipPercentage) + billAmount) / splitBy;
+    return totalPerPerson.toStringAsFixed(2);
   }
 }
 
