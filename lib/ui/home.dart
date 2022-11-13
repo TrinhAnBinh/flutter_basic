@@ -3,20 +3,97 @@ import 'package:first_flutter_app/util/hexcolor.dart';
 import 'package:flutter/material.dart';
 
 class MovieListView extends StatelessWidget {
-  const MovieListView({Key? key}) : super(key: key);
+  // const MovieListView({Key? key}) : super(key: key);
+  // List of movie
+  final List movies = [
+    "a",
+    "b",
+    "c",
+    "c",
+    "c",
+    "c",
+    "c",
+    "c",
+    "c",
+    "c",
+    "c",
+    "c",
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Movies'),
+        backgroundColor: Colors.blueGrey.shade900,
+      ),
+      backgroundColor: Colors.blueGrey.shade400,
+      body: ListView.builder(
+          itemCount: movies.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              elevation: 4,
+              color: Colors.white,
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Container(
+                    child: Text('B'),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
+                trailing: Text('...'),
+                onTap: () => {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => MovieListViewDetails(movieName: movies.elementAt(index),)))
+
+                },
+                onLongPress: () => debugPrint('onLongPress ${movies[index]}'),
+                title: Text(movies[index]),
+                subtitle: Text('sub'),
+              ),
+            );
+          }),
+    );
+  }
+}
+
+// New route , pages
+class MovieListViewDetails extends StatelessWidget {
+  final String movieName;
+
+  const MovieListViewDetails({super.key, required this.movieName});
+  // const MovieListViewDetails({Key? key, String .movieName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Movie'),
+        title: Text('Movies'),
         backgroundColor: Colors.blueGrey.shade900,
       ),
-      backgroundColor: Colors.blueGrey.shade400,
+      body: Center(
+        child: Container(
+          child: TextButton.icon(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.grey,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () => {
+              Navigator.pop(context)
+            },
+            icon: Icon(Icons.wb_cloudy, size: 20, color: Colors.white),
+            label: Text(
+              'Go back to the ${this.movieName}' + ' now',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
-
 
 class QuizApp extends StatefulWidget {
   const QuizApp({Key? key}) : super(key: key);
