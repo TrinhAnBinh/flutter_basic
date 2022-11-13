@@ -1,5 +1,134 @@
+import 'package:first_flutter_app/model/question.dart';
 import 'package:first_flutter_app/util/hexcolor.dart';
 import 'package:flutter/material.dart';
+
+class MovieListView extends StatelessWidget {
+  const MovieListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Movie'),
+        backgroundColor: Colors.blueGrey.shade900,
+      ),
+      backgroundColor: Colors.blueGrey.shade400,
+    );
+  }
+}
+
+
+class QuizApp extends StatefulWidget {
+  const QuizApp({Key? key}) : super(key: key);
+
+  @override
+  State<QuizApp> createState() => _QuizAppState();
+}
+
+class _QuizAppState extends State<QuizApp> {
+  int _questionIndex = 0;
+  List listQuestion = [
+    Question.name('Binh có đẹp trai không?', true),
+    Question.name('Binh có đẹp gái không?', false),
+    Question.name('Binh có đẹp giàu không?', false),
+    Question.name('Binh có đẹp nhiều gái theo không?', false),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('True Citizen'),
+        centerTitle: true,
+        backgroundColor: Colors.blueGrey,
+      ),
+      backgroundColor: Colors.blueGrey,
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+                child: Image.asset(
+              'images/flag.png',
+              width: 250,
+              height: 180,
+            )),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: Colors.blueGrey.shade400,
+                      style: BorderStyle.solid,
+                    )),
+                child: Center(
+                    child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '${listQuestion[_questionIndex].questionText}',
+                    style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.normal),
+                  ),
+                )),
+                height: 120,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () => _checkAnswer(true),
+                  child: Text('True'),
+                  style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
+                ),
+                ElevatedButton(
+                  onPressed: () => _checkAnswer(false),
+                  child: Text('False'),
+                  style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
+                ),
+                ElevatedButton(
+                  onPressed: () => _nextQuestion(),
+                  child: Icon(Icons.arrow_forward_ios),
+                  style: TextButton.styleFrom(backgroundColor: Colors.blueGrey),
+                )
+              ],
+            ),
+            Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _checkAnswer(bool valueChoice) {
+    if (valueChoice == listQuestion[_questionIndex].isCorrect) {
+      debugPrint('yes');
+      final snackBar = SnackBar(
+        backgroundColor: Colors.green.shade700,
+        content: Text('Correct'),
+        duration: Duration(microseconds: 500000),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // next question auto
+      _nextQuestion();
+    } else {
+      debugPrint('false');
+      final snackBar = SnackBar(
+        backgroundColor: Colors.redAccent.shade400,
+        content: Text('Incorrect'),
+        duration: Duration(microseconds: 500000),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  _nextQuestion() {
+    setState(() {
+      _questionIndex = (_questionIndex + 1) % listQuestion.length;
+    });
+  }
+}
 
 class BillSplitter extends StatefulWidget {
   const BillSplitter({Key? key}) : super(key: key);
@@ -47,7 +176,7 @@ class _BillSplitterState extends State<BillSplitter> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '\$ ${calculateTotalPerson(_tipPercentage,_billAmount,_personCounter)}',
+                        '\$ ${calculateTotalPerson(_tipPercentage, _billAmount, _personCounter)}',
                         style: TextStyle(color: _purple.withOpacity(0.5), fontSize: 35, fontWeight: FontWeight.bold),
                       ),
                     )
